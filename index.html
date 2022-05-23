@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Mediant Ltd</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+          rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+          crossorigin="anonymous">
+</head>
+<body>
+
+<div class="container m-5">
+
+    <div class="mb-4" id="container">
+        This is the default test text
+    </div>
+
+    <div class="d-flex gap-3">
+        <button class="btn btn-success" id="get">
+            Click for GET request test
+        </button>
+
+        <button class="btn btn-primary" id="post">
+            Click for POST request test
+        </button>
+
+        <button class="btn btn-warning" id="patch">
+            Click for PATCH request test
+        </button>
+
+        <button class="btn btn-danger" id="destroy">
+            Click for DELETE request test
+        </button>
+
+    </div>
+</div>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+
+        const container = document.getElementById('container');
+
+        //get request
+        const getButton = document.getElementById('get');
+        if (getButton && container) {
+            getButton.addEventListener('click', () => {
+                ajax('GET')
+                    .then((response) => {
+                        container.textContent = response.message;
+                    })
+            })
+        }
+
+        //post request
+        const postButton = document.getElementById('post');
+        if (postButton && container) {
+            postButton.addEventListener('click', () => {
+                ajax('POST', {'name': 'Jane Doe'})
+                    .then((response) => {
+                        container.textContent = response.message;
+                    })
+            })
+        }
+
+        //patch request
+        const patchButton = document.getElementById('patch');
+        if (patchButton && container) {
+            patchButton.addEventListener('click', () => {
+                ajax('PATCH', {'name': 'John The Doe'})
+                    .then((response) => {
+                        container.textContent = response.message;
+                    })
+            })
+        }
+
+      //DELETE request
+        const destroyButton = document.getElementById('destroy');
+        if (destroyButton && container) {
+            destroyButton.addEventListener('click', () => {
+                ajax('DELETE')
+                    .then((response) => {
+                        container.textContent = response.message;
+                    })
+            })
+        }
+
+    });
+
+    async function ajax(method, body) {
+        let params = {
+            method,
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json',
+            },
+        }
+
+        if (body) {
+            params['body'] = JSON.stringify(body);
+        }
+
+        return await fetch('/api/v1/test', params)
+            .then((res) => res.json())
+    }
+</script>
+</body>
+</html>
